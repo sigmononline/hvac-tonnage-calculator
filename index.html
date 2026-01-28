@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HVAC Tonnage Calculator</title>
+  <title>HVAC Tonnage Calculator – Residential & Commercial</title>
+  <meta name="description" content="Free HVAC tonnage calculator for residential and light commercial buildings. Estimate AC size by square footage, ceiling height, and climate.">
 </head>
 <body>
 
 <h1>HVAC Tonnage Calculator</h1>
 
-<label>Square Footage</label>
-<input id="sqft" type="number"><br><br>
-
-<label>Ceiling Height (ft)</label>
-<input id="height" type="number" value="8"><br><br>
-
-<label>Building Type</label>
+<label>Building Type</label><br>
 <select id="buildingType" onchange="updateClimateOptions()">
   <option value="residential">Residential</option>
   <option value="commercial">Commercial</option>
 </select><br><br>
 
-<label>Climate Zone</label>
+<label>Square Footage</label><br>
+<input id="sqft" type="number"><br><br>
+
+<label>Ceiling Height (ft)</label><br>
+<input id="height" type="number" value="8"><br><br>
+
+<label>Climate Zone</label><br>
 <select id="climate"></select><br><br>
 
 <button onclick="calculate()">Calculate</button>
 
 <h2 id="result"></h2>
 
+<p style="font-size: 12px;">
+  Rule-of-thumb estimate only. Final sizing requires a Manual J or engineered load calculation.
+</p>
+
 <script>
 function updateClimateOptions() {
-  const buildingType = document.getElementById("buildingType").value;
+  const type = document.getElementById("buildingType").value;
   const climate = document.getElementById("climate");
 
   let options = [];
 
-  if (buildingType === "residential") {
+  if (type === "residential") {
     options = [
       { label: "Cool", value: 20 },
       { label: "Moderate", value: 25 },
@@ -61,18 +66,21 @@ function calculate() {
   const height = Number(document.getElementById("height").value);
   const btuPerSqft = Number(document.getElementById("climate").value);
 
+  if (!sqft || !height) {
+    document.getElementById("result").innerText = "Please enter all values.";
+    return;
+  }
+
   const heightFactor = height / 8;
   const btu = sqft * btuPerSqft * heightFactor;
   const tons = btu / 12000;
 
   document.getElementById("result").innerText =
-    `Estimated Load: ${tons.toFixed(2)} Tons (Typical recommendation: ${Math.ceil(tons)} tons)`;
+    `Estimated Load: ${tons.toFixed(2)} tons (Typical recommendation: ${Math.ceil(tons)} ton system)`;
 }
 
-// initialize on load
 updateClimateOptions();
 </script>
-
 
 </body>
 </html>
