@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HVAC Tonnage Calculator</title>
+</head>
+<body>
+
+<h1>HVAC Tonnage Calculator</h1>
+
+<label>Square Footage</label>
+<input id="sqft" type="number"><br><br>
+
+<label>Ceiling Height (ft)</label>
+<input id="height" type="number" value="8"><br><br>
+
+<label>Climate Zone</label>
+<select id="climate">
+  <option value="30">Cool</option>
+  <option value="35">Moderate</option>
+  <option value="40">Warm</option>
+</select><br><br>
+
+<button onclick="calculate()">Calculate</button>
+
+<h2 id="result"></h2>
+
+<script>
+function calculate() {
+  const sqft = Number(document.getElementById("sqft").value);
+  const height = Number(document.getElementById("height").value);
+  const climate = Number(document.getElementById("climate").value);
+
+  const btu = sqft * climate * (height / 8);
+  const tons = (btu / 12000).toFixed(2);
+
+  document.getElementById("result").innerText =
+    `Estimated Load: ${tons} Tons (Round up)`;
+}
+</script>
+
+</body>
+</html>
