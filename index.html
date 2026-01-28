@@ -13,30 +13,66 @@
 <label>Ceiling Height (ft)</label>
 <input id="height" type="number" value="8"><br><br>
 
-<label>Climate Zone</label>
-<select id="climate">
-  <option value="30">Cool</option>
-  <option value="35">Moderate</option>
-  <option value="40">Warm</option>
+<label>Building Type</label>
+<select id="buildingType" onchange="updateClimateOptions()">
+  <option value="residential">Residential</option>
+  <option value="commercial">Commercial</option>
 </select><br><br>
+
+<label>Climate Zone</label>
+<select id="climate"></select><br><br>
 
 <button onclick="calculate()">Calculate</button>
 
 <h2 id="result"></h2>
 
 <script>
+function updateClimateOptions() {
+  const buildingType = document.getElementById("buildingType").value;
+  const climate = document.getElementById("climate");
+
+  let options = [];
+
+  if (buildingType === "residential") {
+    options = [
+      { label: "Cool", value: 20 },
+      { label: "Moderate", value: 25 },
+      { label: "Warm", value: 30 }
+    ];
+  } else {
+    options = [
+      { label: "Cool", value: 25 },
+      { label: "Moderate", value: 30 },
+      { label: "Warm", value: 35 }
+    ];
+  }
+
+  climate.innerHTML = "";
+  options.forEach(opt => {
+    const o = document.createElement("option");
+    o.text = opt.label;
+    o.value = opt.value;
+    climate.add(o);
+  });
+}
+
 function calculate() {
   const sqft = Number(document.getElementById("sqft").value);
   const height = Number(document.getElementById("height").value);
-  const climate = Number(document.getElementById("climate").value);
+  const btuPerSqft = Number(document.getElementById("climate").value);
 
-  const btu = sqft * climate * (height / 8);
-  const tons = (btu / 12000).toFixed(2);
+  const heightFactor = height / 8;
+  const btu = sqft * btuPerSqft * heightFactor;
+  const tons = btu / 12000;
 
   document.getElementById("result").innerText =
-    `Estimated Load: ${tons} Tons (Round up)`;
+    `Estimated Load: ${tons.toFixed(2)} Tons (Typical recommendation: ${Math.ceil(tons)} tons)`;
 }
+
+// initialize on load
+updateClimateOptions();
 </script>
+
 
 </body>
 </html>
