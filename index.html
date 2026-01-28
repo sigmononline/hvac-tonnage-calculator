@@ -3,9 +3,39 @@
 <head>
   <title>HVAC Tonnage Calculator – Residential & Commercial</title>
   <meta name="description" content="Free HVAC tonnage calculator for residential and light commercial buildings. Estimate AC size by square footage, ceiling height, and climate.">
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 6px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input, select, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+  }
+
+  button {
+    margin-top: 15px;
+  }
+  </style>
+
 </head>
 <body>
 
+<div class="container">
 <h1>HVAC Tonnage Calculator</h1>
 
 <label>Building Type</label><br>
@@ -81,6 +111,6 @@ function calculate() {
 
 updateClimateOptions();
 </script>
-
+</div>
 </body>
 </html>
