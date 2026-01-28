@@ -1,138 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HVAC Tonnage Calculator - Residential & Commercial</title>
-  <meta name="description" content="Free HVAC tonnage calculator for residential and light commercial buildings. Estimate AC size by square footage, ceiling height, and climate zone.">
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: 1fr 420px 1fr;
-      gap: 20px;
-    }
-
-    .ad {
-      background: #e6e6e6;
-      border: 1px dashed #aaa;
-      height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: #555;
-      text-align: center;
-    }
-
-    .calculator {
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    label {
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin: 6px 0 15px 0;
-      box-sizing: border-box;
-    }
-
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 20px;
-    }
-
-    .disclaimer {
-      font-size: 12px;
-      color: #666;
-      margin-top: 20px;
-    }
-
-    @media (max-width: 900px) {
-      .page {
-        grid-template-columns: 1fr;
-      }
-      .ad {
-        height: 90px;
-      }
-    }
-  </style>
+  <title>HVAC Tonnage Calculator – Residential & Commercial</title>
+  <meta name="description" content="Free HVAC tonnage calculator for residential and light commercial buildings. Estimate AC size by square footage, ceiling height, and climate.">
 </head>
-
 <body>
 
-<div class="page">
+<h1>HVAC Tonnage Calculator</h1>
 
-  <!-- LEFT AD PLACEHOLDER -->
-  <div class="ad">
-    AdSense Placeholder<br>
-    300x600 or 160x600
-  </div>
+<label>Building Type</label><br>
+<select id="buildingType" onchange="updateClimateOptions()">
+  <option value="residential">Residential</option>
+  <option value="commercial">Commercial</option>
+</select><br><br>
 
-  <!-- MAIN CALCULATOR -->
-  <div class="calculator">
-    <h1>HVAC Tonnage Calculator</h1>
+<label>Square Footage</label><br>
+<input id="sqft" type="number"><br><br>
 
-    <label>Building Type</label>
-    <select id="buildingType" onchange="updateClimateOptions()">
-      <option value="residential">Residential</option>
-      <option value="commercial">Commercial</option>
-    </select>
+<label>Ceiling Height (ft)</label><br>
+<input id="height" type="number" value="8"><br><br>
 
-    <label>Square Footage</label>
-    <input id="sqft" type="number">
+<label>Climate Zone</label><br>
+<select id="climate"></select><br><br>
 
-    <label>Ceiling Height (ft)</label>
-    <input id="height" type="number" value="8">
+<button onclick="calculate()">Calculate</button>
 
-    <label>Climate Zone</label>
-    <select id="climate"></select>
+<h2 id="result"></h2>
 
-    <button onclick="calculate()">Calculate</button>
-
-    <h2 id="result"></h2>
-
-    <div class="disclaimer">
-      Rule-of-thumb estimate only. Final equipment sizing requires a Manual J or engineered load calculation.
-    </div>
-  </div>
-
-  <!-- RIGHT AD PLACEHOLDER -->
-  <div class="ad">
-    AdSense Placeholder<br>
-    300x600 or 160x600
-  </div>
-
-</div>
+<p style="font-size: 12px;">
+  Rule-of-thumb estimate only. Final sizing requires a Manual J or engineered load calculation.
+</p>
 
 <script>
 function updateClimateOptions() {
-  var type = document.getElementById("buildingType").value;
-  var climate = document.getElementById("climate");
-  var options = [];
+  const type = document.getElementById("buildingType").value;
+  const climate = document.getElementById("climate");
+
+  let options = [];
 
   if (type === "residential") {
     options = [
@@ -149,31 +53,30 @@ function updateClimateOptions() {
   }
 
   climate.innerHTML = "";
-  for (var i = 0; i < options.length; i++) {
-    var opt = document.createElement("option");
-    opt.text = options[i].label;
-    opt.value = options[i].value;
-    climate.add(opt);
-  }
+  options.forEach(opt => {
+    const o = document.createElement("option");
+    o.text = opt.label;
+    o.value = opt.value;
+    climate.add(o);
+  });
 }
 
 function calculate() {
-  var sqft = Number(document.getElementById("sqft").value);
-  var height = Number(document.getElementById("height").value);
-  var btuPerSqft = Number(document.getElementById("climate").value);
+  const sqft = Number(document.getElementById("sqft").value);
+  const height = Number(document.getElementById("height").value);
+  const btuPerSqft = Number(document.getElementById("climate").value);
 
   if (!sqft || !height) {
     document.getElementById("result").innerText = "Please enter all values.";
     return;
   }
 
-  var heightFactor = height / 8;
-  var btu = sqft * btuPerSqft * heightFactor;
-  var tons = btu / 12000;
+  const heightFactor = height / 8;
+  const btu = sqft * btuPerSqft * heightFactor;
+  const tons = btu / 12000;
 
   document.getElementById("result").innerText =
-    "Estimated Load: " + tons.toFixed(2) +
-    " tons (Typical recommendation: " + Math.ceil(tons) + " ton system)";
+    `Estimated Load: ${tons.toFixed(2)} tons (Typical recommendation: ${Math.ceil(tons)} ton system)`;
 }
 
 updateClimateOptions();
