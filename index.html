@@ -79,6 +79,16 @@
 </div>
 
 <script>
+// TRACK PAGE VISIT
+fetch(https://script.google.com/macros/s/AKfycbw7Xrx5c6CBd3QLZO3qBjJ0jNc-srmZF7Q-sFn_PLiRFk3R0EtiPdfLrx8-V90p1NdY/exec, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    event_type: "visit",
+    user_agent: navigator.userAgent
+  })
+});
+
 function updateClimateOptions() {
   const type = document.getElementById("buildingType").value;
   const climate = document.getElementById("climate");
